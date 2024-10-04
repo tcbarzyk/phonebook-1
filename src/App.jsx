@@ -63,14 +63,23 @@ const App = () => {
       personsService
         .updatePerson(newPerson, id)
         .then(returnedPerson => {
-          setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
-          setNewName('')
-          setNewNumber('')
-          displayNotification(`The number of ${returnedPerson.name} has been changed`, false)
+          //handle person does not exist on server
+          if (returnedPerson == null) {
+            displayNotification(`${newPerson.name} does not exist on server`, true)
+            setPersons(persons.filter(p => p.id !== id))
+          }
+          //otherwise updater person
+          else {
+            console.log(`attmepting to update person ${returnedPerson}`)
+            setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
+            setNewName('')
+            setNewNumber('')
+            displayNotification(`The number of ${returnedPerson.name} has been changed`, false)
+          }
         })
         .catch(error => {
-          displayNotification(`${newPerson.name} does not exist on server`, true)
-          setPersons(persons.filter(p => p.id !== id))
+          displayNotification(`${error.response.data.error}`, true)
+          console.log(error.response.data.error)
         })
     }
   }
@@ -89,7 +98,8 @@ const App = () => {
     setTimeout(() => setNotification(null), 5000)
   }
 
-  const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
+  //const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
+  const personsToShow = persons
 
   return (
     <div>
