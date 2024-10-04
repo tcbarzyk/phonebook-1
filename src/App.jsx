@@ -50,6 +50,10 @@ const App = () => {
           setNewNumber('')
           displayNotification(`${returnedPerson.name} has been added`, false)
         })
+        .catch(error => {
+          displayNotification(`${error.response.data.error}`, true)
+          console.log(error.response.data.error)
+        })
     }
   }
 
