@@ -98,8 +98,7 @@ const App = () => {
     setTimeout(() => setNotification(null), 5000)
   }
 
-  //const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
-  const personsToShow = persons
+  const personsToShow = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div>
